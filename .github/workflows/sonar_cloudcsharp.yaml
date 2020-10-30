@@ -1,15 +1,15 @@
   
 name: sonar-csharp
 env: 
-  SONAR_ORG: filetrust-2
-  SONAR_PROJECT: MVP-ICAP-service-CSHarp
+  SONAR_ORG: kudadigital
+  SONAR_PROJECT: sonar_icap_csharp
 on:
   push:
     branches: '*'
     paths:
       - 'cloud-proxy-app/**'
   pull_request:
-    branches: [ develop ]
+    branches: [ main ]
     paths:
       - 'cloud-proxy-app/**'
 jobs:
@@ -22,7 +22,7 @@ jobs:
           with:
             submodules: true
 
-        - name: scan c# code
+        - name: scan csharp code
           run: |
             /root/.dotnet/tools/dotnet-sonarscanner begin   /o:"${{ env.SONAR_ORG }}"  /d:sonar.login="${{ secrets.SONAR_TOKEN }}"  /k:"${{ env.SONAR_PROJECT }}"  /d:sonar.host.url=https://sonarcloud.io /d:sonar.cfamily.build-wrapper-output="build_wrapper_output_directory"
             dotnet build cloud-proxy-app/cloud-proxy-app.sln
