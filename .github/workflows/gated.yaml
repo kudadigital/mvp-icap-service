@@ -1,0 +1,35 @@
+name: Gated
+
+env:
+  DOCKERHUB_USERNAME: icapserviceaccount
+  REPOSITORY: glasswallsolutions
+  IMAGE: mvp-icap-service
+  TAG: develop
+on:
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Build Docker Image
+      run: docker build -t ${{ env.IMAGE }} .
+      
+  core_test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        dotnet-version: 3.1.101
+    - name: Install dependencies
+      run: dotnet restore ./cloud-proxy-app/cloud-proxy-app.sln
+    - name: Build
+      run: dotnet build ./cloud-proxy-app/cloud-proxy-app.sln --configuration Release --no-restore
+    - name: Test
+      run: dotnet test ./cloud-proxy-app/cloud-proxy-app.sln --no-restore --verbosity normal
+      
