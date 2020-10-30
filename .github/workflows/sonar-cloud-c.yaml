@@ -6,7 +6,7 @@ on:
       - 'c-icap/**'
 #       - 'c-icap-modules/**'
   pull_request:
-    branches: [ develop ]
+    branches: [ main ]
     paths:
       - 'c-icap/**'
 #       - 'c-icap-modules/**'
